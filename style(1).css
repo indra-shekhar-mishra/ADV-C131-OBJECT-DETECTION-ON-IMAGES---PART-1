@@ -1,0 +1,13 @@
+button {
+    background-color: #000000; 
+    border: red;
+    color: white;
+    font-size: 16px;
+    float: right;
+  }
+.heading
+{
+font-size: 24px;
+width: 100%;
+margin: 3px;
+}
