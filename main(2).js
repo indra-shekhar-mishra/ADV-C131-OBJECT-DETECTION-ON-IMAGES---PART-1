@@ -1,18 +1,33 @@
 img = "";
+status = "";
+objects = [];
 function setup(){
-    canvas = createCanvas(640,350);
+    canvas = createCanvas(640,420);
     canvas.center();
+    objectDetector = ml5.objectDetector('cocossd',modelLoaded);
+    document.getElementById('status').innerHTML = "Status : Detecting Objects";
 }
+
 function preload(){
     img = loadImage('A_Dice.jpeg');
 }
 function draw(){
     image(img,0,0,640,420);
-    fill('#FF0000');
-    text('Dice',220,160);
-    noFill();
-    stroke('#FF0000');
-    rect(210,140,200,210);
+   if(status != "")
+   {
+    for (i = 0;i < objects.length;i++)
+    {
+        document.getElementById("status").innerHTML="Status :Object Dectected";
+        
+        fill('#FF0000')
+        percent = floor(objects[i].confidence*100);
+        text(objects[i].label+ " " + percent + "%",objects[i].x+15, objects[i].y+15);
+        noFill();
+        stroke("#FF0000");
+        rect(objects[i].x, objects[i].y,objects[i].width,objects[i].height);
+    }
+    
+   }
 }
 function modelLoaded(){
     console.log('Model Loded !')
@@ -24,10 +39,5 @@ function gotResult(error, results){
         console.log(error);
     }
   console.log(results);
-}
-function setup(){
-    canvas = createCanvas(640,420);
-    canvas.center();
-    objectDetector = ml5.objectDetector('cocossd',modelLoaded);
-    document.getElementById('status').innerHTML = "Status : Detecting Objects";
+  objects = results;
 }
